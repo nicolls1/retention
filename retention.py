@@ -39,13 +39,14 @@ def find_retention(file_path):
     day_counts.append(count_retention(retention_current))
 
     for today in daily_users[1:]:
+        # all user ids that have a streak going
         retention_keys = set(retention_current.keys())
 
-        # returning users
+        # returning users should have their count incremented
         retention_current = {id:retention_current[id]+1 for id in retention_keys & today}
-        # new users
+        # new users should have a streak set to one
         retention_current.update({id: 1 for id in today - retention_keys})
-    
+        
         # add the day to the counts
         day_counts.append(count_retention(retention_current))
         
