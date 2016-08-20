@@ -1,18 +1,17 @@
 #!/usr/bin/env python
 import bisect
+import pandas
+import re
 import sys
 import time
 
 def load_data(file_path):
-    times = []
-    ids = []
-    #start = time.time()
+    start = time.time()
     with open(file_path, 'r') as f:
-        for line in f:
-            split_line = line.split(',')
-            times.append(int(split_line[0]))
-            ids.append(int(split_line[1]))
-    #print 'read time:', time.time()-start
+        data = pandas.read_csv(f).values
+    times = data[:,0]
+    ids = data[:,1]
+    print 'read time:', time.time()-start
     return times, ids
 
 def count_retention(retention):
@@ -55,6 +54,6 @@ def find_retention(file_path):
         print ','.join([str(i+1)]+[str(d) for d in day])
 
 if __name__ == '__main__':
-    #start = time.time()
+    start = time.time()
     find_retention(sys.argv[1])
-    #print 'duration:', time.time()-start
+    print 'duration:', time.time()-start
