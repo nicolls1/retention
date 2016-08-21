@@ -1,8 +1,9 @@
 # Retention
 
-Run with `python retention.py <data_file>`
+Run with `python retention.py <data_file>`  
+Make sure your python is version 2.7 (not 3). Worked on 2.7.6 and 2.7.8, think it sould would on anything above that.
 
-Tested on OSX 10.10.5 and Ubuntu 14.04 
+Tested on OSX 10.10.5 and Ubuntu 14.04.
 
 Computer specs:  
 MacBook Air (13-inch, Mid 2013)  
