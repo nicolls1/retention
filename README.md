@@ -21,14 +21,21 @@ sudo pip install pandas
 ```
 
 Also tested on a mac but not on a clean install. I don't know what exactly I did in the past for things to be working now also but this is my best guess.
+
 Make sure you have xCode command line installed: `xcode-select --install`
+
 Install homebrew: `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+
 Python: `brew install python`
+
 Pip: `brew install pip`
+
 Might need numpy before pandas: `sudo pip install numpy`
+
 Pandas: `sudo pip install pandas`
 
 Output I saw for the file you provided:
+
 1,9831,0,0,0,0,0,0,0,0,0,0,0,0,0
 2,3928,5548,0,0,0,0,0,0,0,0,0,0,0,0
 3,4158,1098,4015,0,0,0,0,0,0,0,0,0,0,0
