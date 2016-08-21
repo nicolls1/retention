@@ -68,6 +68,6 @@ def find_retention(file_path):
         print ','.join([str(i+1)]+[str(d) for d in day])
 
 if __name__ == '__main__':
-    start = time.time()
+    #start = time.time()
     find_retention(sys.argv[1])
-    print 'duration:', time.time()-start
+    #print 'duration:', time.time()-start
