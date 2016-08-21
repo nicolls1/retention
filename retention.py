@@ -20,8 +20,12 @@ def add_new_day():
     return [0]*MAX_STREAK
 
 def add_ended_streaks_to_count(day_counts, active_streaks, ended_keys):
+    # Use the ended streaks and for each key look up how long the streak
+    # has been going on for. Then add one to the streak length in the day that it started.
     for key in ended_keys:
-        # need to subtract one because an active streak of 1 day will be in the 0th position of the list
+        # First we select the day that the streak started by counting backwards 
+        # and then we select the length of the streak to increment. We need to 
+        # subtract one because an active streak of 1 day will be in the 0th position of the list.
         day_counts[-active_streaks[key]][active_streaks[key]-1] += 1
 
 def find_retention(file_path):
@@ -46,17 +50,17 @@ def find_retention(file_path):
         # all user ids that have a streak going
         retention_keys = set(active_streaks.keys())
 
-        # Find streaks that ended today and for each key look up how long the streak
-        # has been going on for. Then add one to the streak length in the day that it started.
+        # update our day_counts
         add_ended_streaks_to_count(day_counts, active_streaks, retention_keys - users_today)
 
         day_counts.append(add_new_day())
+
         # returning users should have their count incremented
         active_streaks = {id:active_streaks[id]+1 for id in retention_keys & users_today}
         # new users should have a streak set to one
         active_streaks.update({id: 1 for id in users_today - retention_keys})
 
-    # any active streaks at the end need to get added to the output
+    # any active streaks at the end need to be cut off and added to the count
     add_ended_streaks_to_count(day_counts, active_streaks, set(active_streaks.keys()))
         
     # write output
@@ -64,6 +68,6 @@ def find_retention(file_path):
         print ','.join([str(i+1)]+[str(d) for d in day])
 
 if __name__ == '__main__':
-    #start = time.time()
+    start = time.time()
     find_retention(sys.argv[1])
-    #print 'duration:', time.time()-start
+    print 'duration:', time.time()-start
