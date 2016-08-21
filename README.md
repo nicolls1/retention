@@ -13,7 +13,9 @@ MacBook Air (13-inch, Mid 2013)
 Ran in 2.65322685242 seconds on OSX with all 8GB of memory.  
 Ran in 3.18237805367 seconds on Ubuntu VM with 2GB of memory.
 
-Tested on a clean 14.04 and the following installs were required: (Pandas needs 2 GB of RAM to install and takes a long time so be patient)
+##Setup
+
+Tested on a clean Ubuntu 14.04 and the following installs were required: (Pandas needs 2 GB of RAM to install and takes a long time so be patient)
 ```
 sudo apt-get -y update
 sudo apt-get -y install python-dev python-pip python-numpy
