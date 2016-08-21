@@ -10,7 +10,7 @@ MacBook Air (13-inch, Mid 2013)
 8 GB 1600 MHz DDR3  
 
 Ran in 2.79395508766 seconds on OSX with all 8GB of memory.  
-Ran in 3.47766804695 seconds on Ubuntu VM with 2GB memory.
+Ran in 3.47766804695 seconds on Ubuntu VM with 2GB of memory.
 
 Tested on a clean 14.04 and the following installs were required: (Pandas needs 2 GB of RAM to install and takes a long time so be patient)
 ```
