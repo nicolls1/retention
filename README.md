@@ -14,7 +14,7 @@ Ran in 3.47766804695 seconds on Ubuntu VM with 2GB memory.
 
 Tested on a clean 14.04 and the following installs were required: (Pandas needs 2 GB of RAM to install and takes a long time so be patient)
 ```
-sudo apt-get updatie
+sudo apt-get update
 sudo apt-get install python-dev python-pip python-numpy
 sudo pip install pandas
 ```
