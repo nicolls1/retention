@@ -30,7 +30,7 @@ Pip: `brew install pip`
 Might need numpy before pandas: `sudo pip install numpy`  
 Pandas: `sudo pip install pandas`  
 
-###Output I saw for the file you provided:
+##Output I saw for the file you provided:
 
 1,4283,1533,781,401,324,226,162,204,205,154,101,93,74,1290  
 2,2830,503,219,89,60,37,26,23,30,13,15,11,72,0  
