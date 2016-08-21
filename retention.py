@@ -22,8 +22,6 @@ def count_retention(retention):
 
 def find_retention(file_path):
     times, ids = load_data(file_path)
-    print times
-    print ids
 
     # convert dates into seconds so we can divide the data into chunks 
     day_cutoffs = [int(time.mktime(time.strptime(str(i)+" Jan 16", "%d %b %y")))-time.timezone for i in range(1, 16)]
