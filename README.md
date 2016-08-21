@@ -2,7 +2,6 @@
 
 Run with `python retention.py <data_file>`
 
-Uses python 2.7  
 Tested on OSX 10.10.5 and Ubuntu 14.04 
 
 Computer specs:  
