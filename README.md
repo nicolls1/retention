@@ -14,11 +14,11 @@ Ran in 2.79395508766 seconds on OSX with all 8GB of memory.
 Ran in 3.47766804695 seconds on Ubuntu VM with 2GB memory.
 
 Tested on a clean 14.04 and the following installs were required: (Pandas needs 2 GB of RAM to install and takes a long time so be patient)
-`
+```
 sudo apt-get updatie
 sudo apt-get install python-dev python-pip python-numpy
 sudo pip install pandas
-`
+```
 
 Also tested on a mac but not on a clean install. I don't know what exactly I did in the past for things to be working now also but this is my best guess.
 Make sure you have xCode command line installed: `xcode-select --install`
