@@ -5,6 +5,8 @@ import re
 import sys
 import time
 
+MAX_STREAK = 14
+
 def load_data(file_path):
     #start = time.time()
     with open(file_path, 'r') as f:
@@ -14,11 +16,13 @@ def load_data(file_path):
     #print 'read time:', time.time()-start
     return times, ids
 
-def count_retention(retention):
-    counts = [0]*14
-    for value in retention.values():
-        counts[value-1] += 1
-    return counts
+def add_new_day():
+    return [0]*MAX_STREAK
+
+def add_ended_streaks(active_streaks, ended_keys, day_counts):
+    for key in ended_keys:
+        day_counts[-active_streaks[key]][active_streaks[key]-1] += 1
+    return day_counts
 
 def find_retention(file_path):
     times, ids = load_data(file_path)
@@ -31,23 +35,29 @@ def find_retention(file_path):
     # list of sets where each set is the ids of the users for that day 
     daily_users = [set(ids[i:j]) for i, j in zip(index_cutoff[:-1], index_cutoff[1:])]
 
+    # day_counts will track the number of streaks for each day. 
+    # We will add a new day everyday
     day_counts = []
+    day_counts.append(add_new_day())
     # all users at the end of the first day have a one day streak
-    retention_current = {id:1 for id in daily_users[0]}
-    # add first day to the counts
-    day_counts.append(count_retention(retention_current))
+    active_streaks = {id:1 for id in daily_users[0]}
 
     for today in daily_users[1:]:
         # all user ids that have a streak going
-        retention_keys = set(retention_current.keys())
+        retention_keys = set(active_streaks.keys())
 
+        # Find streaks that ended today and for each key look up how long the streak
+        # has been going on for. Then add one to the streak length in the day that it started.
+        day_counts = add_ended_streaks(active_streaks, retention_keys - today, day_counts)
+
+        day_counts.append(add_new_day())
         # returning users should have their count incremented
-        retention_current = {id:retention_current[id]+1 for id in retention_keys & today}
+        active_streaks = {id:active_streaks[id]+1 for id in retention_keys & today}
         # new users should have a streak set to one
-        retention_current.update({id: 1 for id in today - retention_keys})
-        
-        # add the day to the counts
-        day_counts.append(count_retention(retention_current))
+        active_streaks.update({id: 1 for id in today - retention_keys})
+
+    # any active streaks at the end need to get added to the output
+    add_ended_streaks(active_streaks, set(active_streaks.keys()), day_counts)
         
     # write output
     for i, day in enumerate(day_counts):
