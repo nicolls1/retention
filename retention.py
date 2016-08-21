@@ -19,10 +19,10 @@ def load_data(file_path):
 def add_new_day():
     return [0]*MAX_STREAK
 
-def add_ended_streaks(active_streaks, ended_keys, day_counts):
+def add_ended_streaks_to_count(day_counts, active_streaks, ended_keys):
     for key in ended_keys:
+        # need to subtract one because an active streak of 1 day will be in the 0th position of the list
         day_counts[-active_streaks[key]][active_streaks[key]-1] += 1
-    return day_counts
 
 def find_retention(file_path):
     times, ids = load_data(file_path)
@@ -36,28 +36,28 @@ def find_retention(file_path):
     daily_users = [set(ids[i:j]) for i, j in zip(index_cutoff[:-1], index_cutoff[1:])]
 
     # day_counts will track the number of streaks for each day. 
-    # We will add a new day everyday
+    # We will add a new day everyday.
     day_counts = []
     day_counts.append(add_new_day())
     # all users at the end of the first day have a one day streak
     active_streaks = {id:1 for id in daily_users[0]}
 
-    for today in daily_users[1:]:
+    for users_today in daily_users[1:]:
         # all user ids that have a streak going
         retention_keys = set(active_streaks.keys())
 
         # Find streaks that ended today and for each key look up how long the streak
         # has been going on for. Then add one to the streak length in the day that it started.
-        day_counts = add_ended_streaks(active_streaks, retention_keys - today, day_counts)
+        add_ended_streaks_to_count(day_counts, active_streaks, retention_keys - users_today)
 
         day_counts.append(add_new_day())
         # returning users should have their count incremented
-        active_streaks = {id:active_streaks[id]+1 for id in retention_keys & today}
+        active_streaks = {id:active_streaks[id]+1 for id in retention_keys & users_today}
         # new users should have a streak set to one
-        active_streaks.update({id: 1 for id in today - retention_keys})
+        active_streaks.update({id: 1 for id in users_today - retention_keys})
 
     # any active streaks at the end need to get added to the output
-    add_ended_streaks(active_streaks, set(active_streaks.keys()), day_counts)
+    add_ended_streaks_to_count(day_counts, active_streaks, set(active_streaks.keys()))
         
     # write output
     for i, day in enumerate(day_counts):
