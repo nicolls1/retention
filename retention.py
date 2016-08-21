@@ -8,7 +8,7 @@ import time
 def load_data(file_path):
     #start = time.time()
     with open(file_path, 'r') as f:
-        data = pandas.read_csv(f).values
+        data = pandas.read_csv(f, header=None, skiprows=None).values
     times = data[:,0]
     ids = data[:,1]
     #print 'read time:', time.time()-start
@@ -22,6 +22,8 @@ def count_retention(retention):
 
 def find_retention(file_path):
     times, ids = load_data(file_path)
+    print times
+    print ids
 
     # convert dates into seconds so we can divide the data into chunks 
     day_cutoffs = [int(time.mktime(time.strptime(str(i)+" Jan 16", "%d %b %y")))-time.timezone for i in range(1, 16)]
