@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 import bisect
-import pandas
 import re
 import sys
 import time
 
+import pandas
+
 MAX_STREAK = 14
+
+# convert dates into seconds so we can divide the data into chunks 
+JAN_DAY_CUTOFFS = [int(time.mktime(time.strptime(str(i)+" Jan 16", "%d %b %y")))-time.timezone for i in range(1, 16)]
 
 def load_data(file_path):
     #start = time.time()
@@ -28,13 +32,9 @@ def add_ended_streaks_to_count(day_counts, active_streaks, ended_keys):
         # subtract one because an active streak of 1 day will be in the 0th position of the list.
         day_counts[-active_streaks[key]][active_streaks[key]-1] += 1
 
-def find_retention(file_path):
-    times, ids = load_data(file_path)
-
-    # convert dates into seconds so we can divide the data into chunks 
-    day_cutoffs = [int(time.mktime(time.strptime(str(i)+" Jan 16", "%d %b %y")))-time.timezone for i in range(1, 16)]
+def find_retention(times, ids, time_cutoffs):
     # find the indexes of the day cutoffs 
-    index_cutoff = [bisect.bisect_left(times, day) for day in day_cutoffs]
+    index_cutoff = [bisect.bisect_left(times, day) for day in time_cutoffs]
 
     # list of sets where each set is the ids of the users for that day 
     daily_users = [set(ids[i:j]) for i, j in zip(index_cutoff[:-1], index_cutoff[1:])]
@@ -63,11 +63,15 @@ def find_retention(file_path):
     # any active streaks at the end need to be cut off and added to the count
     add_ended_streaks_to_count(day_counts, active_streaks, set(active_streaks.keys()))
         
-    # write output
-    for i, day in enumerate(day_counts):
-        print ','.join([str(i+1)]+[str(d) for d in day])
+    return day_counts
 
 if __name__ == '__main__':
     #start = time.time()
-    find_retention(sys.argv[1])
+    times, ids = load_data(sys.argv[1])
+
+    day_counts = find_retention(times, ids, JAN_DAY_CUTOFFS)
+
+    # write output
+    for i, day in enumerate(day_counts):
+        print ','.join([str(i+1)]+[str(d) for d in day])
     #print 'duration:', time.time()-start
