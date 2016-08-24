@@ -14,7 +14,10 @@ JAN_DAY_CUTOFFS = [int(time.mktime(time.strptime(str(i)+" Jan 16", "%d %b %y")))
 def load_data(file_path):
     #start = time.time()
     with open(file_path, 'r') as f:
-        data = pandas.read_csv(f, header=None, skiprows=None).values
+        try:
+            data = pandas.read_csv(f, header=None, skiprows=None).values
+        except ValueError as e:
+            return [], []
     times = data[:,0]
     ids = data[:,1]
     #print 'read time:', time.time()-start

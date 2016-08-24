@@ -25,6 +25,15 @@ class TestRetention(unittest.TestCase):
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ]
 
+    def test_empty(self):
+        test_file = 'testdata/empty.txt'
+        times, ids = retention.load_data(test_file)
+        results = retention.find_retention(times, ids, self.day_cutoffs)
+        
+        expected_results = self.blank_results
+
+        self.assertEqual(results, expected_results)
+
     def test_simple(self):
         test_file = 'testdata/simple.txt'
         times, ids = retention.load_data(test_file)
